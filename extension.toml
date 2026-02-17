@@ -1,0 +1,15 @@
+id = "gno"
+name = "Gno"
+version = "0.1.0"
+schema_version = 1
+authors = ["julienrbrt <https://github.com/julienrbrt>"]
+description = "Gno language support with gnopls LSP (diagnostics, completions, go-to-definition, hover)"
+repository = "https://github.com/julienrbrt/zed-gno"
+
+[language_servers.gnopls]
+name = "gnopls"
+languages = ["Gno"]
+
+[grammars.go]
+repository = "https://github.com/tree-sitter/tree-sitter-go"
+rev = "1547678a9da59885853f5f5cc8a99cc203fa2e2c" # v0.25.0
