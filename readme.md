@@ -1,14 +1,41 @@
 # Zed Extension for Gno
 
-## Prerequisities
+## Prerequisites
 
-1. Install `gnopls`
+1. Install `gnopls`:
 
 ```sh
-# go install github.com/gnoverse/gnopls@latest (until https://github.com/gnoverse/gnopls/issues/46)
-git clone https://github.com/gnoverse/gnopls
-GOROOT=$(go1.24.13 env GOROOT) PATH=$GOROOT/bin:$PATH make install
+go install github.com/gnoverse/gnopls@latest
 ```
+
+## Running tests
+
+Zed play buttons (runnables) need per-language code built into Zed itself, so
+extensions cannot provide them. Use tasks instead. Add these to your project
+`.zed/tasks.json` or the global `tasks.json`:
+
+```json
+[
+  {
+    "label": "gno test package",
+    "command": "gno test ./...",
+    "tags": ["gno-test-package"]
+  },
+  {
+    "label": "gno update golden files",
+    "command": "gno test -update-golden-tests ./...",
+    "tags": ["gno-test-update"]
+  },
+  {
+    "label": "gno lint",
+    "command": "gno lint ./...",
+    "tags": ["gno-lint"]
+  }
+]
+```
+
+Run them with `task: spawn`. Use `$ZED_RELATIVE_FILE` if you want to scope a
+task to the file you are editing.
 
 ## Installation
 

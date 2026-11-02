@@ -1,10 +1,21 @@
-; Gno syntax highlighting
-; Gno uses the same syntax as Go, so we reuse the Go tree-sitter grammar.
-
 (identifier) @variable
 
 (type_identifier) @type
+
+(type_spec
+  name: (type_identifier) @type.definition)
+
+((type_identifier) @type.builtin
+  (#any-of? @type.builtin
+    "any" "bool" "byte" "comparable" "complex64" "complex128" "error" "float32" "float64" "int"
+    "int8" "int16" "int32" "int64" "rune" "string" "uint" "uint8" "uint16" "uint32" "uint64"
+    "uintptr"))
+
+(type_parameter_declaration
+  name: (identifier) @type)
+
 (field_identifier) @property
+
 (package_identifier) @namespace
 
 (label_name) @label
@@ -15,17 +26,24 @@
     (identifier) @property))
 
 (call_expression
-  function: (identifier) @function)
+  function: (identifier) @function.call)
 
 (call_expression
   function: (selector_expression
-    field: (field_identifier) @function.method))
+    field: (field_identifier) @function.method.call))
+
+((call_expression
+  function: (identifier) @function.builtin)
+  (#any-of? @function.builtin
+    "append" "cap" "clear" "close" "complex" "copy" "delete" "imag" "len" "make" "max" "min" "new"
+    "panic" "print" "println" "real" "recover"))
 
 (function_declaration
   name: (identifier) @function)
 
 (method_declaration
   name: (field_identifier) @function.method)
+
 (method_elem
   name: (field_identifier) @function.method)
 
@@ -86,32 +104,35 @@
 ] @operator
 
 [
-  "break"
-  "case"
   "chan"
   "const"
+  "func"
+  "import"
+  "interface"
+  "map"
+  "package"
+  "struct"
+  "type"
+  "var"
+] @keyword
+
+[
+  "break"
+  "case"
   "continue"
   "default"
   "defer"
   "else"
   "fallthrough"
   "for"
-  "func"
   "go"
   "goto"
   "if"
-  "import"
-  "interface"
-  "map"
-  "package"
   "range"
   "return"
   "select"
-  "struct"
   "switch"
-  "type"
-  "var"
-] @keyword
+] @keyword.control
 
 [
   (interpreted_string_literal)
@@ -141,3 +162,10 @@
 ] @constant.builtin
 
 (comment) @comment
+
+; Go directives
+((comment) @preproc
+  (#match? @preproc "^//go:"))
+
+((comment) @preproc
+  (#match? @preproc "^// \\+build"))

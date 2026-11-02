@@ -1,6 +1,6 @@
 id = "gno"
 name = "Gno"
-version = "0.1.0"
+version = "0.1.2"
 schema_version = 1
 authors = ["julienrbrt <https://github.com/julienrbrt>"]
 description = "Gno language support with gnopls LSP (diagnostics, completions, go-to-definition, hover)"
@@ -10,6 +10,8 @@ repository = "https://github.com/julienrbrt/zed-gno"
 name = "gnopls"
 languages = ["Gno"]
 
-[grammars.gno]
-repository = "https://github.com/tree-sitter/tree-sitter-go"
-rev = "1547678a9da59885853f5f5cc8a99cc203fa2e2c" # v0.25.0
+# Same grammar Zed bundles natively (name "go" matches tree-sitter-go's
+# exported symbol); Zed prefers its native grammar at runtime.
+[grammars.go]
+repository = "https://github.com/zed-industries/tree-sitter-go"
+rev = "6862a49e3c5a7567a6c576420e9a8f944e198a85"
